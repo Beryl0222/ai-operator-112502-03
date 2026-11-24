@@ -1,0 +1,7 @@
+{
+  "name": "csr_batches",
+  "version": "1",
+  "description": "批量 CSR 结构、重复列和稠密右矩阵样例。",
+  "input_file": "data/input.json",
+  "implementation": "由项目使用者根据业务契约提供"
+}
