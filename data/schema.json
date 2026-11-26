@@ -1,7 +1,109 @@
 {
   "name": "csr_batches",
   "version": "1",
-  "description": "批量 CSR 结构、重复列和稠密右矩阵样例。",
+  "description": "批量 CSR 结构、重复列和稠密右矩阵样例，以及算子结果/状态契约。",
   "input_file": "data/input.json",
-  "implementation": "由项目使用者根据业务契约提供"
+  "implementation": "operator_csr_batches (src/operator_csr_batches)",
+  "input_contract": {
+    "dense_rhs": "number[n_cols][k]，矩形有限实数矩阵；行数等于 CSR shape[1]",
+    "batches[]": {
+      "sample_id": "str，样本身份",
+      "indptr": "int[n_rows+1]，非降序，indptr[0]=0，indptr[-1]=len(indices)=len(values)",
+      "indices": "int[nnz]，列索引，允许重复与乱序",
+      "values": "number[nnz]，有限实数，允许显式 0.0",
+      "shape": "[n_rows, n_cols]",
+      "block_id": "可选；缺省为 '{sample_id}#block-{i}'",
+      "row_start": "可选，块局部行到样本全局行的连续偏移，默认 0",
+      "row_indices": "可选，显式全局行映射",
+      "retention": "可选，样本级输出保留策略"
+    }
+  },
+  "statuses": {
+    "block_status": ["declared", "accepted", "rejected", "withdrawn", "superseded"],
+    "completeness": ["complete", "incomplete", "unsourced"],
+    "row_status": [
+      "ok",
+      "zero_row",
+      "duplicate_columns_merged",
+      "indices_unsorted",
+      "explicit_zero_value",
+      "rejected",
+      "withdrawn",
+      "declared",
+      "superseded",
+      "unsourced"
+    ],
+    "decision": ["reusable", "must_recompute", "fresh", "reused"]
+  },
+  "result_contract": {
+    "schema": "operator_csr_batches.result/v1",
+    "BatchResult": ["epoch", "effective_set_fingerprint", "order", "samples[]"],
+    "SampleResult": [
+      "sample_id",
+      "status_counts",
+      "flag_counts",
+      "rows[]",
+      "candidates[]",
+      "retention",
+      "contribution"
+    ],
+    "RowResult": [
+      "scores",
+      "score",
+      "completeness",
+      "all_blocks_contributed",
+      "row_status",
+      "structural_status",
+      "flags",
+      "reasons",
+      "nnz_raw",
+      "nnz_merged",
+      "cache_status",
+      "proof_id",
+      "contribution"
+    ],
+    "Candidate": [
+      "candidate_id",
+      "sample_id",
+      "row_index",
+      "rank",
+      "score",
+      "scores",
+      "completeness",
+      "row_status",
+      "proof_id",
+      "source_fingerprint",
+      "contribution"
+    ],
+    "ContributionSummary": [
+      "sample_id",
+      "row_index",
+      "completeness",
+      "all_blocks_contributed",
+      "epoch",
+      "effective_set_fingerprint",
+      "declared_blocks",
+      "expected_blocks",
+      "contributed_blocks",
+      "missing_blocks",
+      "proof"
+    ],
+    "MergeProof": [
+      "proof_id",
+      "source_fingerprint",
+      "merge_fingerprint",
+      "epoch",
+      "effective_set_fingerprint",
+      "operator_version",
+      "rhs_digest",
+      "expected_blocks",
+      "merged_blocks"
+    ]
+  },
+  "determinism": {
+    "block_order_default": "block_id ascending",
+    "within_row": "stable sort by column; duplicate columns left-folded in stored relative order",
+    "accumulation": "acc[k] += merged_weight * rhs[column][k] in the defined global term order",
+    "digest": "sha256 over canonical sorted-key JSON; independent of PYTHONHASHSEED"
+  }
 }

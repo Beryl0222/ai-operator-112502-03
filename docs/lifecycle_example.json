@@ -1,0 +1,157 @@
+{
+  "description": "撤回/补交如何改变有效块集合、证明与分数可用性",
+  "phases": [
+    {
+      "phase": "initial",
+      "epoch": 8,
+      "cache_stats": {
+        "hits": 0,
+        "misses": 4,
+        "entries": 4
+      },
+      "candidates": [
+        {
+          "candidate_id": "s0:r0",
+          "score": 11.0,
+          "complete": true,
+          "proof_id": "proof-6b97116f283242e5382f"
+        },
+        {
+          "candidate_id": "s0:r1",
+          "score": 25.0,
+          "complete": true,
+          "proof_id": "proof-d90f72f159c85b7f3937"
+        },
+        {
+          "candidate_id": "s1:r0",
+          "score": 0.0,
+          "complete": true,
+          "proof_id": "proof-bffb915f8cdbe28d1ae4"
+        },
+        {
+          "candidate_id": "s1:r1",
+          "score": 12.0,
+          "complete": true,
+          "proof_id": "proof-d076dbf1293a46101e12"
+        }
+      ]
+    },
+    {
+      "phase": "after_withdraw_C_assessment",
+      "epoch": 9,
+      "summary": {
+        "total": 4,
+        "reusable": 3,
+        "must_recompute": 1
+      },
+      "decisions": [
+        {
+          "ref": {
+            "sample_id": "s0",
+            "row_index": 0,
+            "proof_id": "proof-6b97116f283242e5382f",
+            "source_fingerprint": "e414503b437d812df9ed637cb9ac37dd5364b364cad0f936cff9f93392c139fe",
+            "merge_fingerprint": "2faab122a7c552cf83743c89fd3adbe28d1db36171701740feaea20cefafbf3b",
+            "score": 11.0,
+            "candidate_id": "s0:r0"
+          },
+          "decision": "reusable",
+          "reasons": [
+            "provenance_current"
+          ],
+          "completeness": "complete"
+        },
+        {
+          "ref": {
+            "sample_id": "s0",
+            "row_index": 1,
+            "proof_id": "proof-d90f72f159c85b7f3937",
+            "source_fingerprint": "e4405b5f65af6912b1cf94431675f7aeb3ed2ca0ca0c883ee17b3d2e70b278a5",
+            "merge_fingerprint": "a4643d472a7ceddb641edb808949709eaaed801fd057dacf47ba8db59c713814",
+            "score": 25.0,
+            "candidate_id": "s0:r1"
+          },
+          "decision": "must_recompute",
+          "reasons": [
+            "block_withdrawn:C"
+          ],
+          "completeness": "complete"
+        },
+        {
+          "ref": {
+            "sample_id": "s1",
+            "row_index": 0,
+            "proof_id": "proof-bffb915f8cdbe28d1ae4",
+            "source_fingerprint": "32a2600c69daa14a672b924aff49c80fa6ead816a836526b3293c9643d9411b0",
+            "merge_fingerprint": "3f96a409c020c9f8c2d661cab06dfc0aa2f43dd573c40d678740b2156c5b22b7",
+            "score": 0.0,
+            "candidate_id": "s1:r0"
+          },
+          "decision": "reusable",
+          "reasons": [
+            "provenance_current"
+          ],
+          "completeness": "complete"
+        },
+        {
+          "ref": {
+            "sample_id": "s1",
+            "row_index": 1,
+            "proof_id": "proof-d076dbf1293a46101e12",
+            "source_fingerprint": "9d590a0987308fbc8166a0c97b329e361aab1b258a5482f292b49913d921aacb",
+            "merge_fingerprint": "c98f27f06373d968dba9928b2fe4e1d733fa248dc16104287ed76f2efa759f40",
+            "score": 12.0,
+            "candidate_id": "s1:r1"
+          },
+          "decision": "reusable",
+          "reasons": [
+            "provenance_current"
+          ],
+          "completeness": "complete"
+        }
+      ]
+    },
+    {
+      "phase": "recomputed_after_withdraw",
+      "kept": [
+        "s0:r0",
+        "s1:r0",
+        "s1:r1"
+      ],
+      "recomputed": [
+        {
+          "candidate_id": "s0:r1",
+          "score": 15.0,
+          "complete": false,
+          "status": "withdrawn",
+          "old_proof_replaced_by": "proof-6d646024f110236fe536"
+        }
+      ],
+      "cache_stats": {
+        "hits": 1,
+        "misses": 1,
+        "entries": 5
+      }
+    },
+    {
+      "phase": "after_supplement_C_revision_2",
+      "epoch": 10,
+      "assessment": {
+        "total": 4,
+        "reusable": 3,
+        "must_recompute": 1
+      },
+      "recomputed": [
+        {
+          "candidate_id": "s0:r1",
+          "scores": [
+            25.0,
+            38.0
+          ],
+          "complete": true,
+          "proof_id": "proof-c7667cc5d93a8915a04b"
+        }
+      ]
+    }
+  ]
+}
